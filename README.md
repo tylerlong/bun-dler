@@ -54,6 +54,10 @@ or
 ./node_modules/.bin/packle
 ```
 
+## Conventions
+
+This tool assumes that you put all your code and assets into `./src/` folder.
+
 ## Default behavior
 
 By default it will bundle and generate output in `./public` folder.

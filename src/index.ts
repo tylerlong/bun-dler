@@ -1,6 +1,7 @@
-import { existsSync } from "fs";
-import { resolve } from "path";
+import { existsSync, mkdirSync, copyFileSync } from "fs";
+import { resolve, join, basename } from "path";
 
+// normalize config
 const config = {
   outDir: "./public",
   jsEntries: ["./src/index.ts"],
@@ -16,7 +17,6 @@ if (userConfig) {
     }
   }
 }
-
 for (const key of Object.keys(config)) {
   if (Array.isArray(config[key])) {
     config[key] = config[key].map((p: string) => resolve(process.cwd(), p));
@@ -25,4 +25,17 @@ for (const key of Object.keys(config)) {
   }
 }
 
-console.log(config);
+// create outDir
+if (!existsSync(config.outDir)) {
+  mkdirSync(config.outDir, { recursive: true });
+}
+
+// copy files
+for (const file of config.copyFiles) {
+  if (!existsSync(file)) {
+    console.error(`file ${file} does not exist`);
+    continue;
+  }
+  const target = join(config.outDir, file.split("/src/")[1]);
+  copyFileSync(file, target);
+}
