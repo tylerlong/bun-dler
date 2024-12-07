@@ -1,0 +1,7 @@
+{
+  "name": "bun-dler",
+  "version": "0.1.0",
+  "dependencies": {
+    "sass": "^1.82.0"
+  }
+}
