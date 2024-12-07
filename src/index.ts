@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync, copyFileSync } from "fs";
-import { resolve, join, basename } from "path";
+import { resolve, join } from "path";
 
 // normalize config
 const config = {
@@ -11,8 +11,8 @@ const config = {
 const configPath = resolve(process.cwd(), "packle.config.json");
 const userConfig = existsSync(configPath) ? require(configPath) : undefined;
 if (userConfig) {
-  for (const key of Object.keys(config)) {
-    if (userConfig[key]) {
+  for (const key of Object.keys(userConfig)) {
+    if (config[key]) {
       config[key] = userConfig[key];
     }
   }
@@ -39,3 +39,13 @@ for (const file of config.copyFiles) {
   const target = join(config.outDir, file.split("/src/")[1]);
   copyFileSync(file, target);
 }
+
+// bundle js
+Bun.build({
+  entrypoints: config.jsEntries,
+  outdir: config.outDir,
+  target: "browser",
+  naming: {
+    asset: "[dir]/[name].[ext]",
+  },
+});
