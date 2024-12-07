@@ -1,4 +1,4 @@
-# bun-dler
+# packle
 
 A bundler similar to Webpack or Parcel.
 
@@ -15,43 +15,43 @@ Note: This dependency is only needed during development and does not affect your
 ## Install
 
 ```
-bun add --dev bun-dler
+bun add --dev packle
 ```
 
 or
 
 ```
-yarn add --dev bun-dler
+yarn add --dev packle
 ```
 
 or
 
 ```
-npm install --save-dev bun-dler
+npm install --save-dev packle
 ```
 
 ## Usage
 
 ```
-bun bd
+bun packle
 ```
 
 or
 
 ```
-yarn bd
+yarn packle
 ```
 
 or
 
 ```
-npx bd
+npx packle
 ```
 
 or
 
 ```
-./node_modules/.bin/bd
+./node_modules/.bin/packle
 ```
 
 ## Default behavior
@@ -81,7 +81,7 @@ In watch mode, you may also manually trigger re-bundle by pressing `Cmd + B` or 
 
 ## Configurations
 
-You may create a `bdconfig.json` file to specify configurations to override the default behavior
+You may create a `packle.config.json` file to specify configurations to override the default behavior
 
 ```json
 {
