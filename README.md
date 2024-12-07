@@ -6,6 +6,8 @@ It is designed to be straightforward and reliable.
 
 The codebase is minimal, with no hidden complexity or unnecessary magic.
 
+Currently it is design to bundle web applications only. Since in theory you don't need to bundle server side applications.
+
 ## Prerequisites
 
 This library requires [bun](https://bun.sh/docs/installation). Please install Bun before proceeding.

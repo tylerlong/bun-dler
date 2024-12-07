@@ -5,7 +5,6 @@ import { compile as sassCompile } from "sass";
 
 // normalize config
 const config = {
-  target: "browser",
   outDir: "./public",
   jsEntries: ["./src/index.ts"],
   cssEntries: ["./src/index.css"],
@@ -22,9 +21,6 @@ if (userConfig) {
 }
 // Update path to absolute
 for (const key of Object.keys(config)) {
-  if (key === "target") {
-    continue;
-  }
   if (Array.isArray(config[key])) {
     config[key] = config[key].map((p: string) => resolve(process.cwd(), p));
   } else {
@@ -50,7 +46,7 @@ for (const file of config.copyFiles) {
 Bun.build({
   entrypoints: config.jsEntries.filter((p) => existsSync(p)),
   outdir: config.outDir,
-  target: config.target as "browser" | "node" | "bun",
+  target: "browser",
   naming: {
     asset: "[dir]/[name].[ext]",
   },
