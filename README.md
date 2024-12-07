@@ -86,8 +86,8 @@ You may create a `packle.config.json` file to specify configurations to override
 ```json
 {
   "outDir": "./public",
-  "jsEntry": "./src/index.ts",
-  "cssEntry": "./src/index.css",
+  "jsEntries": ["./src/index.ts"],
+  "cssEntries": ["./src/index.css"],
   "copyFiles": ["./src/index.html"]
 }
 ```
