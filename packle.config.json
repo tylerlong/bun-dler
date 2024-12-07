@@ -1,6 +1,6 @@
 {
   "outDir": "./lib",
   "jsEntries": ["./src/index.ts"],
-  "cssEntry": ["./src/index.css"],
+  "cssEntry": [],
   "copyFiles": []
 }

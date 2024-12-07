@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, copyFileSync } from "fs";
 import { resolve, join } from "path";
+import { compile as sassCompile } from "sass";
 
 // normalize config
 const config = {
@@ -33,7 +34,6 @@ if (!existsSync(config.outDir)) {
 // copy files
 for (const file of config.copyFiles) {
   if (!existsSync(file)) {
-    console.error(`file ${file} does not exist`);
     continue;
   }
   const target = join(config.outDir, file.split("/src/")[1]);
@@ -42,10 +42,20 @@ for (const file of config.copyFiles) {
 
 // bundle js
 Bun.build({
-  entrypoints: config.jsEntries,
+  entrypoints: config.jsEntries.filter((p) => existsSync(p)),
   outdir: config.outDir,
   target: "browser",
   naming: {
     asset: "[dir]/[name].[ext]",
   },
 });
+
+// bundle css
+for (const cssFile of config.cssEntries) {
+  if (!existsSync(cssFile)) {
+    continue;
+  }
+  const result = sassCompile(cssFile);
+  const target = join(config.outDir, cssFile.split("/src/")[1]);
+  Bun.write(target, result.css);
+}

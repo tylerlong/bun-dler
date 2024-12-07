@@ -95,3 +95,12 @@ You may create a `packle.config.json` file to specify configurations to override
   "copyFiles": ["./src/index.html"]
 }
 ```
+
+For example, in order to bundle a node.js app, you probably should specify this:
+
+```json
+{
+  "outDir": "./lib",
+  "jsEntries": ["./src/index.ts"]
+}
+```
