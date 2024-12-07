@@ -1,6 +1,5 @@
 {
+  "target": "bun",
   "outDir": "./lib",
-  "jsEntries": ["./src/index.ts"],
-  "cssEntry": [],
-  "copyFiles": []
+  "jsEntries": ["./src/index.ts"]
 }

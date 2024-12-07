@@ -1,6 +1,9 @@
 {
   "name": "packle",
   "version": "0.1.2",
+  "bin": {
+    "packle": "./src/index.ts"
+  },
   "dependencies": {
     "sass": "^1.82.0"
   },

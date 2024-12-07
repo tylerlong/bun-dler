@@ -1,9 +1,11 @@
-import { existsSync, mkdirSync, copyFileSync } from "fs";
+#!/usr/bin/env bun
+import { existsSync, mkdirSync, copyFileSync, writeFileSync } from "fs";
 import { resolve, join } from "path";
 import { compile as sassCompile } from "sass";
 
 // normalize config
 const config = {
+  target: "browser",
   outDir: "./public",
   jsEntries: ["./src/index.ts"],
   cssEntries: ["./src/index.css"],
@@ -18,7 +20,11 @@ if (userConfig) {
     }
   }
 }
+// Update path to absolute
 for (const key of Object.keys(config)) {
+  if (key === "target") {
+    continue;
+  }
   if (Array.isArray(config[key])) {
     config[key] = config[key].map((p: string) => resolve(process.cwd(), p));
   } else {
@@ -44,7 +50,7 @@ for (const file of config.copyFiles) {
 Bun.build({
   entrypoints: config.jsEntries.filter((p) => existsSync(p)),
   outdir: config.outDir,
-  target: "browser",
+  target: config.target as "browser" | "node" | "bun",
   naming: {
     asset: "[dir]/[name].[ext]",
   },
@@ -57,5 +63,5 @@ for (const cssFile of config.cssEntries) {
   }
   const result = sassCompile(cssFile);
   const target = join(config.outDir, cssFile.split("/src/")[1]);
-  Bun.write(target, result.css);
+  writeFileSync(target, result.css);
 }
