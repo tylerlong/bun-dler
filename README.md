@@ -76,14 +76,9 @@ You may import `*.json` and `*.tomal` files directly and they will be inlined in
 
 You may import `*.txt` files directly and they will be inlined into the bundle as JavaScript strings.
 
-All assets files, such as images/audios/vidoes/fonts, can be imported directly. Those files will be copied to the output folder without change. And the import is resolved as a relative path pointing to the copied file.
-
-## Watch mode
-
-You may pass `-w` to enable watch mode.
-In watch mode, it will monitor `src` folder and `package.json` file. Whenever there are changes, it will re-run the bundle process.
-
-In watch mode, you may also manually trigger re-bundle by pressing `Cmd + B` or `Ctrl + B`.
+All assets files, such as images/audios/vidoes/fonts, can be imported directly.
+Those files will be copied to the output folder without change.
+And the import is resolved as a relative path pointing to the copied file.
 
 ## Configurations
 
@@ -97,3 +92,11 @@ You may create a `packle.config.json` file to specify configurations to override
   "copyFiles": ["./src/index.html"]
 }
 ```
+
+## Watch mode
+
+You may pass `-w` or `--watch` to enable watch mode.
+In watch mode, it will monitor `src` folder `package.json` and `packle.config.json`. Whenever there are changes, it will re-run the bundle process.
+
+In watch mode, you may also manually trigger re-bundle by pressing `p`.
+You may quit by pressing `q` or `ctrl + c`.

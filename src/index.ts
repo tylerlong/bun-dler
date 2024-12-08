@@ -2,8 +2,15 @@
 import { existsSync, mkdirSync, copyFileSync, writeFileSync, watch } from "fs";
 import { resolve, join } from "path";
 import { compile as sassCompile } from "sass";
+import readline from "readline";
+import { Blue, Green } from "color-loggers";
+
+const info = new Blue();
+const success = new Green();
 
 const bundle = () => {
+  info.log("Bundling...");
+
   // normalize config
   const config = {
     outDir: "./public",
@@ -62,10 +69,13 @@ const bundle = () => {
     const target = join(config.outDir, cssFile.split("/src/")[1]);
     writeFileSync(target, result.css);
   }
+
+  success.log("Bundled!");
 };
 
 bundle();
 
+// watch mode
 const debounce = (func) => {
   let timeout: ReturnType<typeof setTimeout> | null = null;
   return (...args: Parameters<typeof func>) => {
@@ -80,7 +90,24 @@ const debounce = (func) => {
 const debouncedBundle = debounce(bundle);
 const inputs = new Set(process.argv);
 if (inputs.has("--watch") || inputs.has("-w")) {
-  watch(resolve(process.cwd(), "packle.config.json"), () => debouncedBundle());
+  const configFile = resolve(process.cwd(), "packle.config.json");
+  if (existsSync(configFile)) {
+    watch(resolve(process.cwd(), "packle.config.json"), () =>
+      debouncedBundle()
+    );
+  }
   watch(resolve(process.cwd(), "package.json"), () => debouncedBundle());
   watch(resolve(process.cwd(), "src"), () => debouncedBundle());
+
+  // keyboard events
+  readline.emitKeypressEvents(process.stdin);
+  process.stdin.setRawMode(true);
+  process.stdin.on("keypress", (str, key) => {
+    if (key.sequence === "p") {
+      debouncedBundle();
+    }
+    if (key.sequence === "\u0003" || key.sequence === "q") {
+      process.exit();
+    }
+  });
 }
