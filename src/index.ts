@@ -46,7 +46,7 @@ const bundle = () => {
     if (!existsSync(file)) {
       continue;
     }
-    const target = join(config.outDir, file.split("/src/")[1]);
+    const target = join(config.outDir, file.split("/src/").at(-1) as string);
     copyFileSync(file, target);
   }
 
@@ -66,7 +66,7 @@ const bundle = () => {
       continue;
     }
     const result = sassCompile(cssFile);
-    const target = join(config.outDir, cssFile.split("/src/")[1]);
+    const target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
     writeFileSync(target, result.css);
   }
 
