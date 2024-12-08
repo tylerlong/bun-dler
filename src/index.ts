@@ -4,6 +4,7 @@ import { resolve, join } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
+import { getConfig } from "./config.ts";
 
 const info = new Blue();
 const success = new Green();
@@ -11,30 +12,7 @@ const success = new Green();
 const bundle = () => {
   info.log("Bundling...");
 
-  // normalize config
-  const config = {
-    outDir: "./public",
-    jsEntries: ["./src/index.ts"],
-    cssEntries: ["./src/index.css"],
-    copyFiles: ["./src/index.html"],
-  };
-  const configPath = resolve(process.cwd(), "packle.config.json");
-  const userConfig = existsSync(configPath) ? require(configPath) : undefined;
-  if (userConfig) {
-    for (const key of Object.keys(userConfig)) {
-      if (config[key]) {
-        config[key] = userConfig[key];
-      }
-    }
-  }
-  // Update path to absolute
-  for (const key of Object.keys(config)) {
-    if (Array.isArray(config[key])) {
-      config[key] = config[key].map((p: string) => resolve(process.cwd(), p));
-    } else {
-      config[key] = resolve(process.cwd(), config[key]);
-    }
-  }
+  const config = getConfig();
 
   // create outDir
   if (!existsSync(config.outDir)) {
@@ -52,7 +30,7 @@ const bundle = () => {
 
   // bundle js
   Bun.build({
-    entrypoints: config.jsEntries.filter((p) => existsSync(p)),
+    entrypoints: config.jsEntries,
     outdir: config.outDir,
     target: "browser",
     naming: {
