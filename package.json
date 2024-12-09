@@ -1,12 +1,13 @@
 {
   "name": "packle",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "bin": {
     "packle": "./src/index.ts"
   },
   "dependencies": {
     "color-loggers": "^0.3.2",
-    "sass": "^1.82.0"
+    "sass": "^1.82.0",
+    "serve": "^14.2.4"
   },
   "homepage": "https://github.com/tylerlong/packle",
   "devDependencies": {

@@ -20,40 +20,10 @@ Note: This dependency is only needed during development and does not affect your
 bun add --dev packle
 ```
 
-or
-
-```
-yarn add --dev packle
-```
-
-or
-
-```
-npm install --save-dev packle
-```
-
 ## Usage
 
 ```
 bun packle
-```
-
-or
-
-```
-yarn packle
-```
-
-or
-
-```
-npx packle
-```
-
-or
-
-```
-./node_modules/.bin/packle
 ```
 
 ## Conventions
@@ -100,3 +70,13 @@ In watch mode, it will monitor `src` folder `package.json` and `packle.config.js
 
 In watch mode, you may also manually trigger re-bundle by pressing `p`.
 You may quit by pressing `q` or `ctrl + c`.
+
+## Host local files
+
+This library installs [serve](https://www.npmjs.com/package/serve). So that you can:
+
+```
+bun serve public
+```
+
+`public` is the `outDir`. You may need to adjust its value.
