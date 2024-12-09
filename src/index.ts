@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 import { existsSync, mkdirSync, copyFileSync, writeFileSync, watch } from "fs";
-import { resolve, join } from "path";
+import { resolve, join, parse, format } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
@@ -44,7 +44,8 @@ const bundle = () => {
       continue;
     }
     const result = sassCompile(cssFile);
-    const target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
+    let target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
+    target = format({ ...parse(target), base: undefined, ext: ".css" }); // change extension to css
     writeFileSync(target, result.css);
   }
 
