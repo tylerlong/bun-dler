@@ -1,6 +1,6 @@
 {
   "name": "packle",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "bin": {
     "packle": "./src/index.ts"
   },
@@ -13,5 +13,16 @@
   "devDependencies": {
     "@types/bun": "^1.1.14",
     "@types/node": "^22.10.1"
-  }
+  },
+  "keywords": [
+    "packle",
+    "parcel",
+    "webpack",
+    "vite",
+    "esbuild",
+    "bundle",
+    "rollup",
+    "snowpack",
+    "bun"
+  ]
 }

@@ -80,3 +80,8 @@ bun serve public
 ```
 
 `public` is the `outDir`. You may need to adjust its value.
+
+## Demo app
+
+Please check this [packle React Demo](https://github.com/tylerlong/packle-react-demo).
+It uses packle to bundle a React app.
