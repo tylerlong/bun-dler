@@ -9,7 +9,7 @@ import { getConfig } from "./config.ts";
 const info = new Blue();
 const success = new Green();
 
-const bundle = () => {
+const bundle = async () => {
   info.log("Bundling...");
 
   const config = getConfig();
@@ -29,7 +29,7 @@ const bundle = () => {
   }
 
   // bundle js
-  Bun.build({
+  const r = await Bun.build({
     entrypoints: config.jsEntries,
     outdir: config.outDir,
     target: "browser",
@@ -37,6 +37,9 @@ const bundle = () => {
       asset: "[dir]/[name].[ext]",
     },
   });
+  if (!r.success) {
+    console.error(r);
+  }
 
   // bundle css
   for (const cssFile of config.cssEntries) {

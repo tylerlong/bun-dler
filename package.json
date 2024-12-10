@@ -1,6 +1,6 @@
 {
   "name": "packle",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "bin": {
     "packle": "./src/index.ts"
   },
