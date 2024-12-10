@@ -4,10 +4,18 @@ import { resolve, join, parse, format } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
+
 import { getConfig } from "./config.ts";
 
 const info = new Blue();
 const success = new Green();
+
+let prod = false;
+const inputs = new Set(process.argv);
+if (inputs.has("-p") || inputs.has("--production")) {
+  process.env.NODE_ENV = "production";
+  prod = true;
+}
 
 const bundle = async () => {
   info.log("Bundling...");
@@ -36,6 +44,7 @@ const bundle = async () => {
     naming: {
       asset: "[dir]/[name].[ext]",
     },
+    minify: prod,
   });
   if (!r.success) {
     console.error(r);
@@ -58,20 +67,20 @@ const bundle = async () => {
 bundle();
 
 // watch mode
-const debounce = (func) => {
-  let timeout: ReturnType<typeof setTimeout> | null = null;
-  return (...args: Parameters<typeof func>) => {
-    if (timeout) {
-      clearTimeout(timeout);
-    }
-    timeout = setTimeout(() => {
-      func(...args);
-    }, 100);
-  };
-};
-const debouncedBundle = debounce(bundle);
-const inputs = new Set(process.argv);
 if (inputs.has("--watch") || inputs.has("-w")) {
+  const debounce = (func) => {
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    return (...args: Parameters<typeof func>) => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(() => {
+        func(...args);
+      }, 100);
+    };
+  };
+  const debouncedBundle = debounce(bundle);
+
   const configFile = resolve(process.cwd(), "packle.config.json");
   if (existsSync(configFile)) {
     watch(resolve(process.cwd(), "packle.config.json"), () =>

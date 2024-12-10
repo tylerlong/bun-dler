@@ -71,6 +71,11 @@ In watch mode, it will monitor `src` folder `package.json` and `packle.config.js
 In watch mode, you may also manually trigger re-bundle by pressing `p`.
 You may quit by pressing `q` or `ctrl + c`.
 
+## Production mode
+
+You may pass `-p` or `--production` to enable watch mode.
+In production mode, environment variable `NODE_ENV` will be set to "production" and code will be minified.
+
 ## Host local files
 
 This library installs [serve](https://www.npmjs.com/package/serve). So that you can:
