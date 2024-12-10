@@ -13,7 +13,6 @@ const success = new Green();
 let prod = false;
 const inputs = new Set(process.argv);
 if (inputs.has("-p") || inputs.has("--production")) {
-  process.env.NODE_ENV = "production";
   prod = true;
 }
 
@@ -45,6 +44,11 @@ const bundle = async () => {
       asset: "[dir]/[name].[ext]",
     },
     minify: prod,
+    define: {
+      "process.env.NODE_ENV": JSON.stringify(
+        prod ? "production" : "development"
+      ),
+    },
   });
   if (!r.success) {
     console.error(r);
