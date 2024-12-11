@@ -30,16 +30,20 @@ export const getConfigs: () => Config[] = () => {
       ];
     }
 
+    if (config.target === undefined) {
+      config.target = "browser";
+    }
+
     if (config.cssEntries === undefined) {
-      config.cssEntries = ["./src/index.scss", "./src/index.css"];
+      config.cssEntries =
+        config.target === "browser"
+          ? ["./src/index.scss", "./src/index.css"]
+          : [];
     }
 
     if (config.copyFiles === undefined) {
-      config.copyFiles = ["./src/index.html"];
-    }
-
-    if (config.target === undefined) {
-      config.target = "browser";
+      config.copyFiles =
+        config.target === "browser" ? ["./src/index.html"] : [];
     }
 
     config.outDir = resolve(process.cwd(), config.outDir);
