@@ -6,8 +6,6 @@ It is designed to be straightforward and reliable.
 
 The codebase is minimal, with no hidden complexity or unnecessary magic.
 
-Currently it is design to bundle web applications only. Since in theory you don't need to bundle server side applications.
-
 ## Prerequisites
 
 This library requires [bun](https://bun.sh/docs/installation). Please install Bun before proceeding.
@@ -31,6 +29,8 @@ bun packle
 This tool assumes that you put all your code and assets into `./src/` folder.
 
 ## Default behavior
+
+By default it will bundle code for "browser". You may make it `target` "node" by updating the configuration file.
 
 By default it will bundle and generate output in `./public` folder.
 
@@ -56,11 +56,38 @@ You may create a `packle.config.json` file to specify configurations to override
 
 ```json
 {
+  "target": "browser",
   "outDir": "./public",
   "jsEntries": ["./src/index.ts"],
   "cssEntries": ["./src/index.css"],
   "copyFiles": ["./src/index.html"]
 }
+```
+
+You don't need to specify everything if you are OK with the default values.
+For example, `"target": "browser"` can be omitted since it is the default value.
+
+## Multiple configurations
+
+You may specify multiple configurations:
+
+```json
+[
+  {
+    "target": "browser",
+    "outDir": "./public",
+    "jsEntries": ["./src/demo.ts"],
+    "cssEntries": ["./src/index.css"],
+    "copyFiles": ["./src/index.html"]
+  },
+  {
+    "target": "node",
+    "outDir": "./lib",
+    "jsEntries": ["./src/index.ts"],
+    "cssEntries": [],
+    "copyFiles": []
+  }
+]
 ```
 
 ## Watch mode

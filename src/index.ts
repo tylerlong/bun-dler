@@ -5,7 +5,7 @@ import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
 
-import { getConfig } from "./config.ts";
+import { getConfigs } from "./config.ts";
 
 const info = new Blue();
 const success = new Green();
@@ -19,50 +19,52 @@ if (inputs.has("-p") || inputs.has("--production")) {
 const bundle = async () => {
   info.log("Bundling...");
 
-  const config = getConfig();
+  const configs = getConfigs();
 
-  // create outDir
-  if (!existsSync(config.outDir)) {
-    mkdirSync(config.outDir, { recursive: true });
-  }
-
-  // copy files
-  for (const file of config.copyFiles) {
-    if (!existsSync(file)) {
-      continue;
+  for (const config of configs) {
+    // create outDir
+    if (!existsSync(config.outDir)) {
+      mkdirSync(config.outDir, { recursive: true });
     }
-    const target = join(config.outDir, file.split("/src/").at(-1) as string);
-    copyFileSync(file, target);
-  }
 
-  // bundle js
-  const r = await Bun.build({
-    entrypoints: config.jsEntries,
-    outdir: config.outDir,
-    target: "browser",
-    naming: {
-      asset: "[dir]/[name].[ext]",
-    },
-    minify: prod,
-    define: {
-      "process.env.NODE_ENV": JSON.stringify(
-        prod ? "production" : "development"
-      ),
-    },
-  });
-  if (!r.success) {
-    console.error(r);
-  }
-
-  // bundle css
-  for (const cssFile of config.cssEntries) {
-    if (!existsSync(cssFile)) {
-      continue;
+    // copy files
+    for (const file of config.copyFiles) {
+      if (!existsSync(file)) {
+        continue;
+      }
+      const target = join(config.outDir, file.split("/src/").at(-1) as string);
+      copyFileSync(file, target);
     }
-    const result = sassCompile(cssFile);
-    let target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
-    target = format({ ...parse(target), base: undefined, ext: ".css" }); // change extension to css
-    writeFileSync(target, result.css);
+
+    // bundle js
+    const r = await Bun.build({
+      entrypoints: config.jsEntries,
+      outdir: config.outDir,
+      target: config.target,
+      naming: {
+        asset: "[dir]/[name].[ext]",
+      },
+      minify: prod,
+      define: {
+        "process.env.NODE_ENV": JSON.stringify(
+          prod ? "production" : "development"
+        ),
+      },
+    });
+    if (!r.success) {
+      console.error(r);
+    }
+
+    // bundle css
+    for (const cssFile of config.cssEntries) {
+      if (!existsSync(cssFile)) {
+        continue;
+      }
+      const result = sassCompile(cssFile);
+      let target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
+      target = format({ ...parse(target), base: undefined, ext: ".css" }); // change extension to css
+      writeFileSync(target, result.css);
+    }
   }
 
   success.log("Bundled!");
