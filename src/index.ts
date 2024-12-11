@@ -37,6 +37,15 @@ const bundle = async () => {
     }
 
     // bundle js
+    const define = Object.fromEntries(
+      Object.entries(process.env).map(([key, value]) => [
+        `process.env.${key}`,
+        JSON.stringify(value),
+      ])
+    );
+    define["process.env.NODE_ENV"] = JSON.stringify(
+      prod ? "production" : "development"
+    );
     const r = await Bun.build({
       entrypoints: config.jsEntries,
       outdir: config.outDir,
@@ -45,11 +54,7 @@ const bundle = async () => {
         asset: "[dir]/[name].[ext]",
       },
       minify: prod,
-      define: {
-        "process.env.NODE_ENV": JSON.stringify(
-          prod ? "production" : "development"
-        ),
-      },
+      define,
     });
     if (!r.success) {
       console.error(r);

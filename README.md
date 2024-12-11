@@ -113,6 +113,10 @@ bun serve public
 
 `public` is the `outDir`. You may need to adjust its value.
 
+## Environment variables
+
+During bundling time, `process.env.XXX` will be replaced with the string value if `XXX` exists as an environment variable.
+
 ## Demo app
 
 Please check this [packle React Demo](https://github.com/tylerlong/packle-react-demo).
