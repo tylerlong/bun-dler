@@ -115,7 +115,8 @@ bun serve public
 
 ## Environment variables
 
-During bundling time, `process.env.XXX` will be replaced with the string value if `XXX` exists as an environment variable.
+You may create a `.env` file.
+During bundling time, `process.env.XXX` will be replaced with the string value if `XXX` exists in `.env` file.
 
 ## Demo app
 

@@ -6,6 +6,7 @@ import readline from "readline";
 import { Blue, Green } from "color-loggers";
 
 import { getConfigs } from "./config.ts";
+import { loadEnv } from "./env.ts";
 
 const info = new Blue();
 const success = new Green();
@@ -37,12 +38,7 @@ const bundle = async () => {
     }
 
     // bundle js
-    const define = Object.fromEntries(
-      Object.entries(process.env).map(([key, value]) => [
-        `process.env.${key}`,
-        JSON.stringify(value),
-      ])
-    );
+    const define = loadEnv();
     define["process.env.NODE_ENV"] = JSON.stringify(
       prod ? "production" : "development"
     );

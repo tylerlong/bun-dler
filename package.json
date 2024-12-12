@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "color-loggers": "^0.3.2",
+    "dotenv": "^16.4.7",
     "sass": "^1.82.0",
     "serve": "^14.2.4"
   },
