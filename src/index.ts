@@ -51,6 +51,7 @@ const bundle = async () => {
       },
       minify: prod,
       define,
+      external: config.target === "browser" ? [] : ["*"],
     });
     if (!r.success) {
       console.error(r);
