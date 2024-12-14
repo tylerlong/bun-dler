@@ -120,3 +120,17 @@ During bundling time, `process.env.XXX` will be replaced with the string value i
 
 Please check this [packle React Demo](https://github.com/tylerlong/packle-react-demo).
 It uses packle to bundle a React app.
+
+## "target": "node"
+
+When target "node", this tool simply generate a `temp-tsconfig.json` and run `tsc`.
+
+If there is any local typing files that your project depends on, you will need to declare it in `"jsEntries"`. For example:
+
+```
+{
+  "target": "node",
+  "outDir": "lib",
+  "jsEntries": ["./src/index.ts", "./src/@types/index.d.ts"]
+}
+```
