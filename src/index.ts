@@ -1,5 +1,12 @@
 #!/usr/bin/env bun
-import { existsSync, mkdirSync, copyFileSync, writeFileSync, watch } from "fs";
+import {
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+  writeFileSync,
+  watch,
+  unlinkSync,
+} from "fs";
 import { resolve, join, parse, format } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
@@ -58,11 +65,19 @@ const bundle = async () => {
         console.error(r);
       }
     } else if (config.target === "node" && config.jsEntries.length > 0) {
-      await run(
-        `bun tsc ${config.jsEntries.join(" ")} --outDir ${
-          config.outDir
-        } --declaration --target ESNext --moduleResolution NodeNext --module NodeNext --skipLibCheck --jsx react`
-      );
+      const tsConfig = {
+        compilerOptions: {
+          esModuleInterop: true,
+          jsx: "react",
+          outDir: config.outDir,
+          skipLibCheck: true,
+          declaration: true,
+        },
+        files: config.jsEntries,
+      };
+      writeFileSync("./temp-tsconfig.json", JSON.stringify(tsConfig, null, 2));
+      await run("bun tsc --project ./temp-tsconfig.json");
+      unlinkSync("./temp-tsconfig.json");
     }
 
     // bundle css
