@@ -4,9 +4,10 @@ import { resolve, join, parse, format } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
+import { run } from "shell-commands";
 
-import { getConfigs } from "./config.ts";
-import { loadEnv } from "./env.ts";
+import { getConfigs } from "./config";
+import { loadEnv } from "./env";
 
 const info = new Blue();
 const success = new Green();
@@ -33,28 +34,35 @@ const bundle = async () => {
       if (!existsSync(file)) {
         continue;
       }
-      const target = join(config.outDir, file.split("/src/").at(-1) as string);
-      copyFileSync(file, target);
+      const dest = join(config.outDir, file.split("/src/").at(-1) as string);
+      copyFileSync(file, dest);
     }
 
     // bundle js
-    const define = loadEnv();
-    define["process.env.NODE_ENV"] = JSON.stringify(
-      prod ? "production" : "development"
-    );
-    const r = await Bun.build({
-      entrypoints: config.jsEntries,
-      outdir: config.outDir,
-      target: config.target,
-      naming: {
-        asset: "[dir]/[name].[ext]",
-      },
-      minify: prod,
-      define,
-      packages: config.target === "browser" ? "bundle" : "external",
-    });
-    if (!r.success) {
-      console.error(r);
+    if (config.target === "browser") {
+      const define = loadEnv();
+      define["process.env.NODE_ENV"] = JSON.stringify(
+        prod ? "production" : "development"
+      );
+      const r = await Bun.build({
+        entrypoints: config.jsEntries,
+        outdir: config.outDir,
+        target: "browser",
+        naming: {
+          asset: "[dir]/[name].[ext]",
+        },
+        minify: prod,
+        define,
+      });
+      if (!r.success) {
+        console.error(r);
+      }
+    } else if (config.target === "node" && config.jsEntries.length > 0) {
+      await run(
+        `bun tsc ${config.jsEntries.join(" ")} --outDir ${
+          config.outDir
+        } --declaration --target ESNext --moduleResolution NodeNext --module NodeNext --skipLibCheck`
+      );
     }
 
     // bundle css
@@ -63,9 +71,9 @@ const bundle = async () => {
         continue;
       }
       const result = sassCompile(cssFile);
-      let target = join(config.outDir, cssFile.split("/src/").at(-1) as string);
-      target = format({ ...parse(target), base: undefined, ext: ".css" }); // change extension to css
-      writeFileSync(target, result.css);
+      let dest = join(config.outDir, cssFile.split("/src/").at(-1) as string);
+      dest = format({ ...parse(dest), base: undefined, ext: ".css" }); // change extension to css
+      writeFileSync(dest, result.css);
     }
   }
 

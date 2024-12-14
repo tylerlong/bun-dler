@@ -1,6 +1,6 @@
 {
   "name": "packle",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "bin": {
     "packle": "./src/index.ts"
   },
@@ -8,7 +8,9 @@
     "color-loggers": "^0.3.2",
     "dotenv": "^16.4.7",
     "sass": "^1.83.0",
-    "serve": "^14.2.4"
+    "serve": "^14.2.4",
+    "shell-commands": "^0.4.2",
+    "typescript": "^5.7.2"
   },
   "homepage": "https://github.com/tylerlong/packle",
   "devDependencies": {
