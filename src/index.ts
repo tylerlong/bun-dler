@@ -61,7 +61,7 @@ const bundle = async () => {
       await run(
         `bun tsc ${config.jsEntries.join(" ")} --outDir ${
           config.outDir
-        } --declaration --target ESNext --moduleResolution NodeNext --module NodeNext --skipLibCheck`
+        } --declaration --target ESNext --moduleResolution NodeNext --module NodeNext --skipLibCheck --jsx react`
       );
     }
 
