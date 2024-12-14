@@ -123,7 +123,7 @@ It uses packle to bundle a React app.
 
 ## "target": "node"
 
-When target "node", this tool simply generate a `temp-tsconfig.json` and run `tsc`.
+When target "node", this tool simply generate a `packle-tsconfig.json` and run `tsc`, finally delete `packle-tsconfig.json`.
 
 If there is any local typing files that your project depends on, you will need to declare it in `"jsEntries"`. For example:
 

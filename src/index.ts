@@ -75,9 +75,12 @@ const bundle = async () => {
         },
         files: config.jsEntries,
       };
-      writeFileSync("./temp-tsconfig.json", JSON.stringify(tsConfig, null, 2));
-      await run("bun tsc --project ./temp-tsconfig.json");
-      unlinkSync("./temp-tsconfig.json");
+      writeFileSync(
+        "./packle-tsconfig.json",
+        JSON.stringify(tsConfig, null, 2)
+      );
+      await run("bun tsc --project ./packle-tsconfig.json");
+      unlinkSync("./packle-tsconfig.json");
     }
 
     // bundle css
