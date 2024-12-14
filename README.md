@@ -77,15 +77,13 @@ You may specify multiple configurations:
     "target": "browser",
     "outDir": "./public",
     "jsEntries": ["./src/demo.ts"],
-    "cssEntries": ["./src/index.css"],
+    "cssEntries": ["./src/index.scss"],
     "copyFiles": ["./src/index.html"]
   },
   {
     "target": "node",
     "outDir": "./lib",
-    "jsEntries": ["./src/index.ts"],
-    "cssEntries": [],
-    "copyFiles": []
+    "jsEntries": ["./src/index.ts"]
   }
 ]
 ```
