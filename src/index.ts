@@ -72,6 +72,9 @@ const bundle = async () => {
           outDir: config.outDir,
           skipLibCheck: true,
           declaration: true,
+          module: "nodenext",
+          moduleResolution: "nodenext",
+          target: "esnext",
         },
         files: config.jsEntries,
       };
