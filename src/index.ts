@@ -7,7 +7,7 @@ import {
   watch,
   unlinkSync,
 } from "fs";
-import { resolve, join, parse, format } from "path";
+import { resolve, join, parse, format, basename } from "path";
 import { compile as sassCompile } from "sass";
 import readline from "readline";
 import { Blue, Green } from "color-loggers";
@@ -41,7 +41,7 @@ const bundle = async () => {
       if (!existsSync(file)) {
         continue;
       }
-      const dest = join(config.outDir, file.split("/src/").at(-1) as string);
+      const dest = join(config.outDir, basename(file));
       copyFileSync(file, dest);
     }
 
@@ -89,7 +89,7 @@ const bundle = async () => {
         continue;
       }
       const result = sassCompile(cssFile);
-      let dest = join(config.outDir, cssFile.split("/src/").at(-1) as string);
+      let dest = join(config.outDir, basename(cssFile));
       dest = format({ ...parse(dest), base: undefined, ext: ".css" }); // change extension to css
       writeFileSync(dest, result.css);
     }
@@ -117,9 +117,7 @@ if (inputs.has("--watch") || inputs.has("-w")) {
 
   const configFile = resolve(process.cwd(), "packle.config.json");
   if (existsSync(configFile)) {
-    watch(resolve(process.cwd(), "packle.config.json"), () =>
-      debouncedBundle()
-    );
+    watch(configFile, () => debouncedBundle());
   }
   watch(resolve(process.cwd(), "package.json"), () => debouncedBundle());
   watch(resolve(process.cwd(), "src"), () => debouncedBundle());

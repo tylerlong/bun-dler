@@ -24,10 +24,6 @@ bun add --dev packle
 bun packle
 ```
 
-## Conventions
-
-This tool assumes that you put all your code and assets into `./src/` folder.
-
 ## Default behavior
 
 By default it will bundle code for "browser". You may make it `target` "node" by updating the configuration file.
@@ -92,6 +88,8 @@ You may specify multiple configurations:
 
 You may pass `-w` or `--watch` to enable watch mode.
 In watch mode, it will monitor `src` folder `package.json` and `packle.config.json`. Whenever there are changes, it will re-run the bundle process.
+
+Please note that, if your source code is not in `src` folder, the watch feature may not work as expected. It is an known issue.
 
 In watch mode, you may also manually trigger re-bundle by pressing `p`.
 You may quit by pressing `q` or `ctrl + c`.
